@@ -1,0 +1,163 @@
+@use '@/styles/variables.scss' as *;
+
+.craftCard {
+  @include card-base;
+  overflow: hidden;
+  transition: all $transition-base;
+  
+  &:active {
+    transform: scale(0.98);
+    box-shadow: $shadow-card-hover;
+  }
+  
+  .coverWrap {
+    position: relative;
+    width: 100%;
+    height: 320rpx;
+    overflow: hidden;
+    
+    .cover {
+      width: 100%;
+      height: 100%;
+    }
+    
+    .levelTag {
+      position: absolute;
+      top: $spacing-md;
+      left: $spacing-md;
+      padding: 6rpx 16rpx;
+      background: rgba(184, 92, 56, 0.9);
+      color: #fff;
+      font-size: $font-size-xs;
+      border-radius: $radius-sm;
+    }
+  }
+  
+  .content {
+    padding: $spacing-md $spacing-lg $spacing-lg;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-xs;
+    
+    .name {
+      font-size: $font-size-lg;
+      font-weight: $font-weight-semibold;
+      color: $color-text-primary;
+      @include text-ellipsis;
+    }
+    
+    .category {
+      font-size: $font-size-sm;
+      color: $color-primary;
+    }
+    
+    .description {
+      font-size: $font-size-sm;
+      color: $color-text-secondary;
+      line-height: 1.5;
+      @include text-ellipsis-multi(2);
+      margin-top: $spacing-xs;
+    }
+    
+    .stats {
+      display: flex;
+      gap: $spacing-lg;
+      margin-top: $spacing-sm;
+      
+      .stat {
+        display: flex;
+        align-items: baseline;
+        gap: 4rpx;
+        
+        .statNum {
+          font-size: $font-size-md;
+          font-weight: $font-weight-semibold;
+          color: $color-primary;
+        }
+        
+        .statLabel {
+          font-size: $font-size-xs;
+          color: $color-text-tertiary;
+        }
+      }
+    }
+  }
+}
+
+.craftCardSmall {
+  @include card-base;
+  overflow: hidden;
+  width: 300rpx;
+  display: inline-block;
+  vertical-align: top;
+  margin-right: $spacing-md;
+  
+  &:active {
+    transform: scale(0.98);
+  }
+  
+  .coverWrap {
+    position: relative;
+    width: 100%;
+    height: 200rpx;
+    overflow: hidden;
+    
+    .cover {
+      width: 100%;
+      height: 100%;
+    }
+    
+    .levelTag {
+      position: absolute;
+      top: $spacing-sm;
+      left: $spacing-sm;
+      padding: 4rpx 12rpx;
+      background: rgba(184, 92, 56, 0.9);
+      color: #fff;
+      font-size: 20rpx;
+      border-radius: $radius-xs;
+    }
+  }
+  
+  .content {
+    padding: $spacing-sm $spacing-md $spacing-md;
+    display: flex;
+    flex-direction: column;
+    gap: 4rpx;
+    
+    .name {
+      font-size: $font-size-base;
+      font-weight: $font-weight-semibold;
+      color: $color-text-primary;
+      @include text-ellipsis;
+    }
+    
+    .category {
+      font-size: $font-size-xs;
+      color: $color-primary;
+    }
+    
+    .stats {
+      display: flex;
+      gap: $spacing-md;
+      margin-top: $spacing-xs;
+      
+      .stat {
+        display: flex;
+        align-items: baseline;
+        gap: 2rpx;
+        
+        .statNum {
+          font-size: $font-size-sm;
+          font-weight: $font-weight-medium;
+          color: $color-primary;
+        }
+        
+        .statLabel {
+          font-size: 20rpx;
+          color: $color-text-tertiary;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,74 @@
+@use '@/styles/variables.scss' as *;
+
+.masterCard {
+  @include card-base;
+  padding: $spacing-md;
+  display: flex;
+  gap: $spacing-md;
+  transition: all $transition-base;
+  
+  &:active {
+    transform: scale(0.98);
+    box-shadow: $shadow-card-hover;
+  }
+  
+  .avatarWrap {
+    position: relative;
+    flex-shrink: 0;
+    
+    .avatar {
+      width: 120rpx;
+      height: 120rpx;
+      border-radius: $radius-lg;
+    }
+    
+    .generationBadge {
+      position: absolute;
+      bottom: -8rpx;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 2rpx 12rpx;
+      background: $gradient-primary;
+      color: #fff;
+      font-size: 20rpx;
+      border-radius: $radius-round;
+      white-space: nowrap;
+    }
+  }
+  
+  .info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 8rpx;
+    min-width: 0;
+    
+    .name {
+      font-size: $font-size-md;
+      font-weight: $font-weight-semibold;
+      color: $color-text-primary;
+      @include text-ellipsis;
+    }
+    
+    .title {
+      font-size: $font-size-sm;
+      color: $color-text-secondary;
+      @include text-ellipsis;
+    }
+    
+    .craftTag {
+      display: inline-flex;
+      align-self: flex-start;
+      margin-top: 4rpx;
+      padding: 4rpx 12rpx;
+      background: $color-tag-bg;
+      border-radius: $radius-xs;
+      
+      .craftName {
+        font-size: $font-size-xs;
+        color: $color-tag-text;
+      }
+    }
+  }
+}

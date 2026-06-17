@@ -1,0 +1,195 @@
+@use '@/styles/variables.scss' as *;
+
+.worksPage {
+  min-height: 100vh;
+  background: $gradient-bg;
+  padding-bottom: calc(#{$tab-bar-height} + #{$spacing-lg});
+}
+
+.pageHeader {
+  background: $color-primary;
+  padding: $spacing-lg $page-padding;
+  
+  .headerTitle {
+    font-size: $font-size-xl;
+    font-weight: $font-weight-bold;
+    color: #fff;
+    margin-bottom: $spacing-xs;
+  }
+  
+  .headerSubtitle {
+    font-size: $font-size-sm;
+    color: rgba(255, 255, 255, 0.8);
+  }
+}
+
+.actionBar {
+  display: flex;
+  gap: $spacing-md;
+  padding: $spacing-md $page-padding;
+  
+  .uploadBtn {
+    flex: 1;
+    @include button-primary;
+    height: $button-height-md;
+    
+    .btnIcon {
+      margin-right: $spacing-xs;
+    }
+  }
+  
+  .customBtn {
+    flex: 1;
+    @include button-outline;
+    height: $button-height-md;
+    border-color: #fff;
+    color: #fff;
+  }
+}
+
+.tabBar {
+  display: flex;
+  background: $color-bg-card;
+  border-bottom: 1rpx solid $color-border-light;
+  
+  .tabItem {
+    flex: 1;
+    text-align: center;
+    padding: $spacing-md 0;
+    font-size: $font-size-base;
+    color: $color-text-secondary;
+    position: relative;
+    
+    &.active {
+      color: $color-primary;
+      font-weight: $font-weight-semibold;
+      
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 48rpx;
+        height: 6rpx;
+        background: $gradient-primary;
+        border-radius: 3rpx;
+      }
+    }
+  }
+}
+
+.categoryScroll {
+  padding: $spacing-md 0;
+  white-space: nowrap;
+  
+  .categoryItem {
+    display: inline-block;
+    padding: 12rpx 28rpx;
+    margin-right: $spacing-sm;
+    background: $color-bg-card;
+    border-radius: $radius-button;
+    font-size: $font-size-sm;
+    color: $color-text-secondary;
+    border: 1rpx solid transparent;
+    
+    &:first-child {
+      margin-left: $page-padding;
+    }
+    
+    &:last-child {
+      margin-right: $page-padding;
+    }
+    
+    &.active {
+      background: $color-tag-bg;
+      color: $color-primary;
+      border-color: $color-primary;
+      font-weight: $font-weight-medium;
+    }
+  }
+}
+
+.worksGrid {
+  display: flex;
+  flex-wrap: wrap;
+  padding: $spacing-md $page-padding;
+  gap: $spacing-md;
+  
+  .workItem {
+    width: calc(50% - 12rpx);
+    
+    &:nth-child(odd) {
+      margin-right: 0;
+    }
+  }
+}
+
+.loadingText {
+  text-align: center;
+  padding: $spacing-lg;
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+}
+
+.noMore {
+  text-align: center;
+  padding: $spacing-lg;
+  font-size: $font-size-sm;
+  color: $color-text-disabled;
+}
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: $spacing-xxl * 2 0;
+  
+  .emptyIcon {
+    font-size: 120rpx;
+    margin-bottom: $spacing-md;
+  }
+  
+  .emptyText {
+    font-size: $font-size-base;
+    color: $color-text-tertiary;
+  }
+}
+
+.bannerSection {
+  padding: $spacing-md $page-padding;
+  
+  .bannerCard {
+    @include card-base;
+    padding: $spacing-lg;
+    background: linear-gradient(135deg, rgba(184, 92, 56, 0.15) 0%, rgba(212, 175, 55, 0.15) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    
+    .bannerContent {
+      flex: 1;
+      
+      .bannerTitle {
+        font-size: $font-size-md;
+        font-weight: $font-weight-semibold;
+        color: $color-text-primary;
+        margin-bottom: 8rpx;
+      }
+      
+      .bannerDesc {
+        font-size: $font-size-sm;
+        color: $color-text-secondary;
+      }
+    }
+    
+    .bannerAction {
+      padding: 12rpx 28rpx;
+      background: $gradient-primary;
+      color: #fff;
+      font-size: $font-size-sm;
+      border-radius: $radius-button;
+      font-weight: $font-weight-medium;
+    }
+  }
+}
