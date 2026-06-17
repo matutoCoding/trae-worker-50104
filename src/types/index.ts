@@ -134,14 +134,47 @@ export interface Order {
   createdAt: string;
 }
 
+export interface EnrolledCourse {
+  id: string;
+  courseId: string;
+  scheduleId: string;
+  courseTitle: string;
+  courseCover: string;
+  craftName: string;
+  masterName: string;
+  className: string;
+  startDate: string;
+  endDate: string;
+  classTime: string;
+  amount: number;
+  enrolledAt: string;
+  completedLessons: string[];
+  progress: number;
+  status: 'learning' | 'completed';
+}
+
+export interface ExamRecord {
+  id: string;
+  examTitle: string;
+  craftName: string;
+  level: string;
+  score: number;
+  totalScore: number;
+  passScore: number;
+  passed: boolean;
+  completedAt: string;
+  certificateId?: string;
+}
+
 export interface CustomOrder {
   id: string;
   orderNo: string;
   craftName: string;
   description: string;
   budget: number;
+  budgetRange: string;
   deadline: string;
-  status: 'pending' | 'quoted' | 'accepted' | 'in_progress' | 'completed';
+  status: 'pending' | 'quoted' | 'accepted' | 'in_progress' | 'completed' | 'cancelled';
   createdAt: string;
 }
 
@@ -166,4 +199,5 @@ export interface CommunityPost {
   comments: number;
   createdAt: string;
   category: string;
+  isLiked: boolean;
 }

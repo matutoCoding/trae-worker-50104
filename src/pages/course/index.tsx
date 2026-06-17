@@ -6,6 +6,7 @@ import classNames from 'classnames';
 import CourseCard from '@/components/CourseCard';
 import SectionHeader from '@/components/SectionHeader';
 import { courseList } from '@/data/courses';
+import { useEnrolledCourses } from '@/hooks/useAppStore';
 
 const tabs = [
   { key: 'all', label: '全部' },
@@ -26,6 +27,9 @@ const CoursePage: React.FC = () => {
   const [activeSort, setActiveSort] = useState('recommend');
   const [searchText, setSearchText] = useState('');
 
+  const { enrolledCourses } = useEnrolledCourses();
+  const hasEnrolledCourses = enrolledCourses.length > 0;
+
   const handleTabChange = (key: string) => {
     setActiveTab(key);
   };
@@ -34,12 +38,24 @@ const CoursePage: React.FC = () => {
     setActiveSort(key);
   };
 
-  const handleContinueStudy = () => {
-    Taro.navigateTo({ url: '/pages/video-lesson/index?courseId=1' });
+  const handleContinueStudy = (courseId: string) => {
+    Taro.navigateTo({ url: `/pages/video-lesson/index?courseId=${courseId}` });
   };
 
   const handleFilter = () => {
     Taro.showToast({ title: '筛选功能', icon: 'none' });
+  };
+
+  const handleGoCourseDetail = (courseId: string) => {
+    Taro.navigateTo({ url: `/pages/course-detail/index?id=${courseId}` });
+  };
+
+  const isCourseEnrolled = (courseId: string) => {
+    return enrolledCourses.some(ec => ec.courseId === courseId);
+  };
+
+  const getEnrolledInfo = (courseId: string) => {
+    return enrolledCourses.find(ec => ec.courseId === courseId);
   };
 
   const filteredCourses = courseList.filter(course => {
@@ -74,23 +90,87 @@ const CoursePage: React.FC = () => {
       </View>
 
       <ScrollView scrollY style={{ height: 'calc(100vh - 152rpx)' }}>
-        <View className={styles.studyProgressSection}>
-          <View className={styles.progressCard}>
-            <View className={styles.progressHeader}>
-              <Text className={styles.progressTitle}>继续学习</Text>
-              <View className={styles.continueBtn} onClick={handleContinueStudy}>
-                继续学习
+        {hasEnrolledCourses && (
+          <View className={styles.studyProgressSection}>
+            <SectionHeader title="我的课程" showMore={false} />
+            <ScrollView className={styles.enrolledScroll} scrollX>
+              {enrolledCourses.map((ec) => (
+                <View
+                  key={ec.id}
+                  className={styles.enrolledCard}
+                  onClick={() => handleGoCourseDetail(ec.courseId)}
+                >
+                  <Image
+                    className={styles.enrolledCover}
+                    src={ec.courseCover}
+                    mode="aspectFill"
+                  />
+                  <View className={styles.enrolledInfo}>
+                    <Text className={styles.enrolledTitle}>{ec.courseTitle}</Text>
+                    <Text className={styles.enrolledMeta}>{ec.className}</Text>
+                    <View className={styles.enrolledProgress}>
+                      <View className={styles.progressBar}>
+                        <View
+                          className={styles.progressFill}
+                          style={{ width: `${ec.progress}%` }}
+                        />
+                      </View>
+                      <Text className={styles.progressText}>{ec.progress}%</Text>
+                    </View>
+                  </View>
+                  <View
+                    className={styles.continueBtn}
+                    onClick={(e) => { e.stopPropagation(); handleContinueStudy(ec.courseId); }}
+                  >
+                    <Text>继续学习</Text>
+                  </View>
+                </View>
+              ))}
+            </ScrollView>
+          </View>
+        )}
+
+        {hasEnrolledCourses && enrolledCourses.some(ec => ec.completedLessons.length > 0) && (
+          <View className={styles.studyProgressSection}>
+            <View className={styles.progressCard}>
+              <View className={styles.progressHeader}>
+                <Text className={styles.progressTitle}>继续学习</Text>
+                {enrolledCourses[0] && (
+                  <View
+                    className={styles.continueBtnSmall}
+                    onClick={() => handleContinueStudy(enrolledCourses[0].courseId)}
+                  >
+                    继续学习
+                  </View>
+                )}
+              </View>
+              <View className={styles.progressBar}>
+                <View
+                  className={styles.progressFill}
+                  style={{
+                    width: enrolledCourses[0]
+                      ? `${enrolledCourses[0].progress}%`
+                      : '25%'
+                  }}
+                />
+              </View>
+              <View className={styles.progressInfo}>
+                <Text>
+                  {enrolledCourses[0]
+                    ? enrolledCourses[0].courseTitle
+                    : '景德镇陶瓷入门课程'
+                  }
+                </Text>
+                <Text>
+                  {enrolledCourses[0]
+                    ? `${enrolledCourses[0].completedLessons.length}/12课`
+                    : '3/12课'
+                  }
+                </Text>
               </View>
             </View>
-            <View className={styles.progressBar}>
-              <View className={styles.progressFill} />
-            </View>
-            <View className={styles.progressInfo}>
-              <Text>景德镇陶瓷入门课程</Text>
-              <Text>3/12课</Text>
-            </View>
           </View>
-        </View>
+        )}
 
         <View className={styles.tabBar}>
           {tabs.map((tab) => (
@@ -124,7 +204,29 @@ const CoursePage: React.FC = () => {
 
         <View className={styles.courseList}>
           {filteredCourses.map((course) => (
-            <CourseCard key={course.id} course={course} />
+            <View key={course.id} className={styles.courseItemWrapper}>
+              {isCourseEnrolled(course.id) && (
+                <View className={styles.enrolledBadge}>
+                  <Text>✓ 已报名</Text>
+                </View>
+              )}
+              <CourseCard course={course} />
+              {isCourseEnrolled(course.id) && getEnrolledInfo(course.id) && (
+                <View className={styles.courseItemActions}>
+                  <View className={styles.actionRow}>
+                    <Text className={styles.actionText}>
+                      进度：{getEnrolledInfo(course.id)!.progress}% · {getEnrolledInfo(course.id)!.className}
+                    </Text>
+                    <View
+                      className={styles.learnBtn}
+                      onClick={() => handleContinueStudy(course.id)}
+                    >
+                      <Text>{getEnrolledInfo(course.id)!.progress > 0 ? '继续学习' : '开始学习'}</Text>
+                    </View>
+                  </View>
+                </View>
+              )}
+            </View>
           ))}
         </View>
 

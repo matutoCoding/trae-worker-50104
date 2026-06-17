@@ -427,26 +427,285 @@
   }
   
   .modalActions {
-    display: flex;
-    gap: $spacing-md;
+  display: flex;
+  gap: $spacing-md;
+  margin-top: $spacing-xl;
+  
+  .actionBtn {
+    flex: 1;
+    height: $button-height-lg;
+    border-radius: $radius-button;
+    font-size: $font-size-base;
+    font-weight: $font-weight-semibold;
+    @include flex-center;
     
-    .actionBtn {
-      flex: 1;
-      height: $button-height-lg;
-      border-radius: $radius-button;
-      font-size: $font-size-base;
+    &.secondary {
+      background: $color-bg-section;
+      color: $color-text-secondary;
+    }
+    
+    &.primary {
+      background: $gradient-primary;
+      color: #fff;
+    }
+  }
+}
+
+.enrolledBanner {
+  background: linear-gradient(135deg, rgba(46, 125, 50, 0.1) 0%, rgba(46, 125, 50, 0.05) 100%);
+  border: 1rpx solid rgba(46, 125, 50, 0.2);
+  border-radius: $radius-md;
+  padding: $spacing-md;
+  margin-bottom: $spacing-md;
+  display: flex;
+  gap: $spacing-sm;
+  align-items: flex-start;
+
+  .badge {
+    background: $color-success;
+    color: #fff;
+    padding: 6rpx 16rpx;
+    border-radius: $radius-sm;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-semibold;
+    flex-shrink: 0;
+  }
+
+  .bannerInfo {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .bannerRow {
+    display: flex;
+    align-items: center;
+    margin-bottom: 4rpx;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  .bannerLabel {
+    font-size: $font-size-xs;
+    color: $color-text-tertiary;
+    flex-shrink: 0;
+  }
+
+  .bannerValue {
+    font-size: $font-size-xs;
+    color: $color-text-primary;
+    font-weight: $font-weight-medium;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .bannerActions {
+    flex-shrink: 0;
+  }
+
+  .bannerBtn {
+    background: linear-gradient(135deg, #5D8A5D 0%, $color-secondary 100%);
+    color: #fff;
+    padding: $spacing-xs $spacing-md;
+    border-radius: $radius-sm;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-semibold;
+
+    &:active {
+      opacity: 0.9;
+    }
+  }
+}
+
+.quickActions {
+  display: flex;
+  margin: 0 $page-padding $spacing-md;
+  background: #fff;
+  border-radius: $radius-md;
+  padding: $spacing-md;
+  box-shadow: $shadow-sm;
+  gap: $spacing-sm;
+
+  .quickActionItem {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $spacing-xs;
+    padding: $spacing-sm 0;
+
+    &:active {
+      background: $color-bg-secondary;
+      border-radius: $radius-sm;
+    }
+  }
+
+  .quickIcon {
+    font-size: 40rpx;
+  }
+
+  .quickText {
+    font-size: $font-size-xs;
+    color: $color-text-primary;
+  }
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: $spacing-md;
+
+  .sectionTitle {
+    margin-bottom: 0;
+  }
+}
+
+.reserveBtn {
+  background: linear-gradient(135deg, $color-primary 0%, #8B4513 100%);
+  color: #fff;
+  padding: $spacing-xs $spacing-md;
+  border-radius: 999rpx;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+}
+
+.scheduleItem {
+  &.enrolled {
+    border-color: $color-success;
+    background: rgba(46, 125, 50, 0.05);
+  }
+}
+
+.scheduleTitleRow {
+  display: flex;
+  align-items: center;
+  gap: $spacing-xs;
+}
+
+.enrolledTag {
+  background: $color-success;
+  color: #fff;
+  padding: 2rpx 12rpx;
+  border-radius: $radius-sm;
+  font-size: 20rpx;
+  font-weight: $font-weight-semibold;
+}
+
+.selectBtn {
+  &.learningBtn {
+    background: linear-gradient(135deg, #5D8A5D 0%, $color-secondary 100%);
+    border-color: transparent;
+    color: #fff;
+
+    &:active {
+      opacity: 0.9;
+    }
+  }
+
+  &.disabled {
+    background: $color-bg-secondary;
+    border-color: $color-border;
+    color: $color-text-tertiary;
+  }
+}
+
+.learningBtn {
+  background: linear-gradient(135deg, #5D8A5D 0%, $color-secondary 100%) !important;
+}
+
+.emptySchedule, .emptyLessons {
+  padding: $spacing-xl 0;
+  text-align: center;
+
+  .emptyIcon {
+    font-size: 64rpx;
+    display: block;
+    margin-bottom: $spacing-sm;
+    opacity: 0.5;
+  }
+
+  .emptyText {
+    font-size: $font-size-base;
+    font-weight: $font-weight-semibold;
+    color: $color-text-primary;
+    display: block;
+    margin-bottom: $spacing-xs;
+  }
+
+  .emptyDesc {
+    font-size: $font-size-sm;
+    color: $color-text-tertiary;
+  }
+}
+
+.lessonPreview {
+  .lessonPreviewItem {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    padding: $spacing-md 0;
+    border-bottom: 1rpx solid $color-border;
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  .lessonOrder {
+    width: 44rpx;
+    height: 44rpx;
+    background: $color-bg-secondary;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: $font-size-xs;
+    color: $color-text-secondary;
+    font-weight: $font-weight-semibold;
+    flex-shrink: 0;
+  }
+
+  .lessonInfo {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .lessonTitle {
+    font-size: $font-size-sm;
+    color: $color-text-primary;
+    display: block;
+    margin-bottom: 2rpx;
+  }
+
+  .lessonDuration {
+    font-size: $font-size-xs;
+    color: $color-text-tertiary;
+  }
+
+  .lessonTag {
+    font-size: 20rpx;
+    color: $color-text-tertiary;
+    flex-shrink: 0;
+  }
+
+  .viewAllBtn {
+    text-align: center;
+    padding: $spacing-md;
+    background: $color-bg-secondary;
+    border-radius: $radius-md;
+    margin-top: $spacing-md;
+
+    &:active {
+      background: #E8DFD5;
+    }
+
+    Text {
+      font-size: $font-size-sm;
+      color: $color-primary;
       font-weight: $font-weight-medium;
-      @include flex-center;
-      
-      &.secondary {
-        background: $color-bg-section;
-        color: $color-text-secondary;
-      }
-      
-      &.primary {
-        background: $gradient-primary;
-        color: #fff;
-      }
     }
   }
 }

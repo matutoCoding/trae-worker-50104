@@ -3,106 +3,23 @@ import { View, Text, Image, ScrollView, Textarea, Input } from '@tarojs/componen
 import Taro from '@tarojs/taro';
 import styles from './index.module.scss';
 import classNames from 'classnames';
-
-interface CommunityPost {
-  id: string;
-  userId: string;
-  userName: string;
-  userAvatar: string;
-  userLevel: string;
-  content: string;
-  images?: string[];
-  craftTag?: string;
-  createdAt: string;
-  likes: number;
-  comments: number;
-  isLiked: boolean;
-}
-
-const initialPosts: CommunityPost[] = [
-  {
-    id: 'p1',
-    userId: 'u1',
-    userName: '陶瓷爱好者小王',
-    userAvatar: 'https://picsum.photos/id/1012/100/100',
-    userLevel: '进阶学员',
-    content: '今天终于完成了人生第一件青花瓷作品！虽然还有很多瑕疵，但从揉泥、拉坯、修坯到绘画、上釉、烧制，每一步都充满了期待。感谢王大师的耐心指导！分享给大家看看~',
-    images: [
-      'https://picsum.photos/id/30/400/400',
-      'https://picsum.photos/id/31/400/400',
-      'https://picsum.photos/id/32/400/400'
-    ],
-    craftTag: '景德镇陶瓷',
-    createdAt: '2小时前',
-    likes: 56,
-    comments: 12,
-    isLiked: false
-  },
-  {
-    id: 'p2',
-    userId: 'u2',
-    userName: '绣娘李姐',
-    userAvatar: 'https://picsum.photos/id/1027/100/100',
-    userLevel: '高级学员',
-    content: '分享一个苏绣针法小技巧：绣花瓣时用戗针，从花瓣边缘向中心层层推进，颜色由深到浅渐变，这样绣出来的花朵会更有立体感。大家可以试试看！',
-    craftTag: '苏绣',
-    createdAt: '5小时前',
-    likes: 89,
-    comments: 23,
-    isLiked: true
-  },
-  {
-    id: 'p3',
-    userId: 'u3',
-    userName: '竹艺新人',
-    userAvatar: 'https://picsum.photos/id/1025/100/100',
-    userLevel: '入门学员',
-    content: '刚开始学竹编，手指都被划破好几次了😭 编出来的篮子也是歪歪扭扭的。请问各位前辈，初学者有什么好的练习方法吗？',
-    craftTag: '竹编',
-    createdAt: '昨天',
-    likes: 34,
-    comments: 45,
-    isLiked: false
-  },
-  {
-    id: 'p4',
-    userId: 'u4',
-    userName: '剪纸张师傅',
-    userAvatar: 'https://picsum.photos/id/1074/100/100',
-    userLevel: '传承人',
-    content: '今天教大家剪一个简单的"囍"字，步骤：1.红纸对折两次；2.画出半个喜字的轮廓；3.沿着线条剪；4.展开就是完整的囍字啦！适合婚礼装饰用~',
-    images: [
-      'https://picsum.photos/id/106/400/400'
-    ],
-    craftTag: '剪纸',
-    createdAt: '2天前',
-    likes: 128,
-    comments: 36,
-    isLiked: false
-  }
-];
+import { appStore } from '@/store/appStore';
+import { useCommunityPosts } from '@/hooks/useAppStore';
+import type { CommunityPost } from '@/types';
 
 const postTags = ['全部', '景德镇陶瓷', '苏绣', '宣纸', '景泰蓝', '竹编', '木雕', '剪纸', '紫砂壶'];
 
 const CommunityPage: React.FC = () => {
-  const [posts, setPosts] = useState<CommunityPost[]>(initialPosts);
   const [activeTag, setActiveTag] = useState('全部');
   const [showPostModal, setShowPostModal] = useState(false);
   const [newContent, setNewContent] = useState('');
   const [newTag, setNewTag] = useState('');
   const [newImages, setNewImages] = useState<string[]>([]);
 
+  const posts = useCommunityPosts();
+
   const handleLike = (postId: string) => {
-    setPosts(posts.map(post => {
-      if (post.id === postId) {
-        return {
-          ...post,
-          isLiked: !post.isLiked,
-          likes: post.isLiked ? post.likes - 1 : post.likes + 1
-        };
-      }
-      return post;
-    }));
+    appStore.updatePostLikes(postId);
   };
 
   const handleComment = (postId: string) => {
@@ -130,22 +47,16 @@ const CommunityPage: React.FC = () => {
       return;
     }
 
-    const newPost: CommunityPost = {
-      id: 'np' + Date.now(),
-      userId: 'me',
-      userName: '非遗学员',
-      userAvatar: 'https://picsum.photos/id/1005/100/100',
-      userLevel: '进阶学员',
+    appStore.addCommunityPost({
+      title: '',
       content: newContent.trim(),
-      images: newImages.length > 0 ? newImages : undefined,
-      craftTag: newTag || undefined,
-      createdAt: '刚刚',
-      likes: 0,
-      comments: 0,
-      isLiked: false
-    };
+      authorId: 'me',
+      authorName: '非遗学员',
+      authorAvatar: 'https://picsum.photos/id/1005/100/100',
+      images: newImages,
+      category: newTag || ''
+    });
 
-    setPosts([newPost, ...posts]);
     Taro.showToast({ title: '发布成功', icon: 'success' });
     handleClosePost();
   };
@@ -172,7 +83,7 @@ const CommunityPage: React.FC = () => {
 
   const filteredPosts = activeTag === '全部'
     ? posts
-    : posts.filter(post => post.craftTag === activeTag);
+    : posts.filter(post => post.category === activeTag);
 
   return (
     <View className={styles.page}>
@@ -207,19 +118,19 @@ const CommunityPage: React.FC = () => {
                 <View className={styles.postHeader}>
                   <Image
                     className={styles.avatar}
-                    src={post.userAvatar}
+                    src={post.authorAvatar}
                     mode="aspectFill"
                   />
                   <View className={styles.userInfo}>
                     <View className={styles.userNameRow}>
-                      <Text className={styles.userName}>{post.userName}</Text>
-                      <View className={styles.levelBadge}>{post.userLevel}</View>
+                      <Text className={styles.userName}>{post.authorName}</Text>
+                      <View className={styles.levelBadge}>进阶学员</View>
                     </View>
                     <Text className={styles.postTime}>{post.createdAt}</Text>
                   </View>
-                  {post.craftTag && (
+                  {post.category && (
                     <View className={styles.craftTag}>
-                      <Text>{post.craftTag}</Text>
+                      <Text>{post.category}</Text>
                     </View>
                   )}
                 </View>

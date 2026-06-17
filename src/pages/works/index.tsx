@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { View, Text, ScrollView } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import styles from './index.module.scss';
 import classNames from 'classnames';
 import WorkCard from '@/components/WorkCard';
-import { workList } from '@/data/works';
+import { useWorks } from '@/hooks/useAppStore';
 
 const tabs = [
   { key: 'all', label: '全部作品' },
@@ -31,6 +31,8 @@ const categoryToCraftMap: Record<string, string> = {
 const WorksPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState('all');
   const [activeCategory, setActiveCategory] = useState('全部');
+
+  const workList = useWorks();
 
   const handleTabChange = (key: string) => {
     setActiveTab(key);

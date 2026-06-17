@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { View, Text, ScrollView } from '@tarojs/components';
-import Taro from '@tarojs/taro';
+import Taro, { useRouter } from '@tarojs/taro';
 import styles from './index.module.scss';
 import classNames from 'classnames';
+import { appStore } from '@/store/appStore';
+import { useExamRecords } from '@/hooks/useAppStore';
+import type { ExamRecord } from '@/types';
 
 interface Question {
   id: number;
@@ -83,11 +86,28 @@ const examData = {
 };
 
 const ExamPage: React.FC = () => {
+  const router = useRouter();
+  const paramCraftName = router.params.craftName;
+  const paramLevel = router.params.level;
+
   const [answers, setAnswers] = useState<Record<number, number>>({});
   const [submitted, setSubmitted] = useState(false);
   const [showResult, setShowResult] = useState(false);
   const [score, setScore] = useState(0);
   const [passed, setPassed] = useState(false);
+  const [newCertId, setNewCertId] = useState<string | null>(null);
+
+  const examRecords = useExamRecords();
+  const craftRecords = useMemo(() => {
+    return examRecords.filter(r =>
+      r.craftName === (paramCraftName || examData.craftName) &&
+      r.level === (paramLevel || examData.level)
+    );
+  }, [examRecords, paramCraftName, paramLevel]);
+
+  const examTitle = paramCraftName && paramLevel
+    ? `${paramCraftName}技艺等级考核（${paramLevel}）`
+    : examData.title;
 
   const handleSelectAnswer = (questionId: number, optionIndex: number) => {
     if (submitted) return;
@@ -125,13 +145,31 @@ const ExamPage: React.FC = () => {
   };
 
   const doSubmit = () => {
-    calculateScore();
+    const finalScore = calculateScore();
+    const isPassed = finalScore >= examData.passScore;
     setSubmitted(true);
+
+    const record = appStore.addExamRecord({
+      examTitle,
+      craftName: paramCraftName || examData.craftName,
+      level: paramLevel || examData.level,
+      score: finalScore,
+      totalScore: examData.totalScore,
+      passScore: examData.passScore,
+      passed: isPassed,
+      completedAt: new Date().toISOString().split('T')[0]
+    });
+
+    if (isPassed && record.certificateId) {
+      setNewCertId(record.certificateId);
+    }
+
     setTimeout(() => setShowResult(true), 300);
   };
 
   const handleCloseResult = () => {
     setShowResult(false);
+    setNewCertId(null);
   };
 
   const handleViewCertificate = () => {
@@ -144,6 +182,7 @@ const ExamPage: React.FC = () => {
     setShowResult(false);
     setScore(0);
     setPassed(false);
+    setNewCertId(null);
   };
 
   const answeredCount = Object.keys(answers).length;
@@ -153,9 +192,9 @@ const ExamPage: React.FC = () => {
     <View className={styles.page}>
       <View className={styles.examHeader}>
         <View className={styles.examInfo}>
-          <Text className={styles.examTitle}>{examData.title}</Text>
+          <Text className={styles.examTitle}>{examTitle}</Text>
           <View className={styles.examMeta}>
-            <View className={styles.metaTag}>{examData.level}</View>
+            <View className={styles.metaTag}>{paramLevel || examData.level}</View>
             <Text className={styles.metaText}>⏱ {examData.duration}</Text>
             <Text className={styles.metaText}>📋 {examData.questions.length}题</Text>
             <Text className={styles.metaText}>💯 {examData.totalScore}分</Text>
@@ -172,7 +211,38 @@ const ExamPage: React.FC = () => {
         </View>
       </View>
 
-      <ScrollView scrollY style={{ height: 'calc(100vh - 440rpx)' }}>
+      {craftRecords.length > 0 && (
+        <View className={styles.historySection}>
+          <View className={styles.historyHeader}>
+            <Text className={styles.historyTitle}>📊 历史考核记录</Text>
+            <Text className={styles.historyCount}>共{craftRecords.length}次</Text>
+          </View>
+          <ScrollView className={styles.historyScroll} scrollX>
+            {craftRecords.slice(0, 5).map((record) => (
+              <View
+                key={record.id}
+                className={classNames(
+                  styles.historyCard,
+                  record.passed ? styles.passed : styles.failed
+                )}
+              >
+                <View className={styles.historyScore}>
+                  <Text className={styles.historyScoreNum}>{record.score}</Text>
+                  <Text className={styles.historyScoreUnit}>分</Text>
+                </View>
+                <View className={styles.historyStatus}>
+                  <Text className={styles.historyStatusText}>
+                    {record.passed ? '✓ 通过' : '✗ 未通过'}
+                  </Text>
+                </View>
+                <Text className={styles.historyDate}>{record.completedAt}</Text>
+              </View>
+            ))}
+          </ScrollView>
+        </View>
+      )}
+
+      <ScrollView scrollY style={{ height: craftRecords.length > 0 ? 'calc(100vh - 560rpx)' : 'calc(100vh - 440rpx)' }}>
         <View className={styles.questionList}>
           {examData.questions.map((q, index) => (
             <View key={q.id} className={styles.questionCard}>
@@ -245,6 +315,12 @@ const ExamPage: React.FC = () => {
             <Text className={styles.resultTitle}>
               {passed ? '恭喜通过考核！' : '继续努力！'}
             </Text>
+            {passed && newCertId && (
+              <View className={styles.certNotice}>
+                <Text className={styles.certNoticeIcon}>📜</Text>
+                <Text className={styles.certNoticeText}>新证书已生成，可前往证书页查看</Text>
+              </View>
+            )}
             <View className={styles.scoreCard}>
               <View className={styles.scoreMain}>
                 <Text className={styles.scoreNum}>{score}</Text>

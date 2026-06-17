@@ -121,7 +121,168 @@
   text-align: center;
   padding: $spacing-lg;
   font-size: $font-size-sm;
-  color: $color-text-disabled;
+  color: $color-text-tertiary;
+}
+
+.enrolledScroll {
+  white-space: nowrap;
+  padding: 0 $page-padding $spacing-md;
+  margin: 0 (-#{$page-padding});
+}
+
+.enrolledCard {
+  display: inline-flex;
+  width: 560rpx;
+  background: #fff;
+  border-radius: $radius-md;
+  padding: $spacing-md;
+  margin-right: $spacing-md;
+  box-shadow: $shadow-sm;
+  gap: $spacing-sm;
+  align-items: center;
+
+  &:last-child {
+    margin-right: $page-padding;
+  }
+
+  &:active {
+    background: $color-bg-secondary;
+  }
+}
+
+.enrolledCover {
+  width: 140rpx;
+  height: 100rpx;
+  border-radius: $radius-sm;
+  flex-shrink: 0;
+}
+
+.enrolledInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.enrolledTitle {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  display: block;
+  margin-bottom: 4rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.enrolledMeta {
+  font-size: $font-size-xs;
+  color: $color-text-secondary;
+  display: block;
+  margin-bottom: $spacing-xs;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.enrolledProgress {
+  display: flex;
+  align-items: center;
+  gap: $spacing-xs;
+}
+
+.enrolledProgress .progressBar {
+  flex: 1;
+  height: 8rpx;
+  background: $color-bg-secondary;
+  border-radius: 999rpx;
+  overflow: hidden;
+}
+
+.enrolledProgress .progressFill {
+  height: 100%;
+  background: linear-gradient(90deg, #5D8A5D 0%, $color-secondary 100%);
+  border-radius: 999rpx;
+  transition: width 0.3s ease;
+}
+
+.progressText {
+  font-size: $font-size-xs;
+  color: $color-secondary;
+  font-weight: $font-weight-semibold;
+  flex-shrink: 0;
+}
+
+.continueBtn {
+  background: linear-gradient(135deg, #5D8A5D 0%, $color-secondary 100%);
+  color: #fff;
+  padding: $spacing-xs $spacing-md;
+  border-radius: $radius-sm;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  flex-shrink: 0;
+
+  &:active {
+    opacity: 0.9;
+  }
+}
+
+.continueBtnSmall {
+  background: linear-gradient(135deg, $color-primary 0%, #8B4513 100%);
+  color: #fff;
+  padding: $spacing-xs $spacing-md;
+  border-radius: 999rpx;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+}
+
+.courseItemWrapper {
+  position: relative;
+  margin-bottom: $spacing-md;
+}
+
+.enrolledBadge {
+  position: absolute;
+  top: 0;
+  right: $spacing-md;
+  background: $color-success;
+  color: #fff;
+  padding: 4rpx 16rpx;
+  border-top-left-radius: $radius-md;
+  border-bottom-right-radius: $radius-md;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  z-index: 10;
+}
+
+.courseItemActions {
+  background: #fff;
+  margin: -1rpx $spacing-sm 0;
+  padding: $spacing-sm $spacing-md;
+  border-radius: 0 0 $radius-md $radius-md;
+  border-top: 1rpx solid $color-border;
+}
+
+.actionRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.actionText {
+  font-size: $font-size-xs;
+  color: $color-text-secondary;
+}
+
+.learnBtn {
+  background: linear-gradient(135deg, rgba(93, 138, 93, 0.1) 0%, rgba(93, 138, 93, 0.05) 100%);
+  color: $color-secondary;
+  padding: $spacing-xs $spacing-md;
+  border-radius: 999rpx;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+
+  &:active {
+    background: rgba(93, 138, 93, 0.15);
+  }
 }
 
 .studyProgressSection {

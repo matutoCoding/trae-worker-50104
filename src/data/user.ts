@@ -75,6 +75,7 @@ export const customOrderList: CustomOrder[] = [
     craftName: '景德镇陶瓷',
     description: '定制一对刻字青花瓷瓶，作为结婚礼物，希望刻上新人姓名和日期，风格简约雅致。',
     budget: 3000,
+    budgetRange: '1000-3000元',
     deadline: '2026-07-01',
     status: 'in_progress',
     createdAt: '2026-05-20'
@@ -85,6 +86,7 @@ export const customOrderList: CustomOrder[] = [
     craftName: '苏绣',
     description: '定制一幅全家福肖像刺绣，尺寸约50*70cm，希望达到写实效果。',
     budget: 8000,
+    budgetRange: '5000-10000元',
     deadline: '2026-09-01',
     status: 'quoted',
     createdAt: '2026-06-05'

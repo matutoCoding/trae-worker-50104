@@ -3,17 +3,18 @@ import { View, Text, Input, Textarea, ScrollView } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import styles from './index.module.scss';
 import classNames from 'classnames';
-import { customOrderList } from '@/data/user';
+import { appStore } from '@/store/appStore';
+import { useCustomOrders } from '@/hooks/useAppStore';
 import type { CustomOrder } from '@/types';
 
 const craftOptions = ['景德镇陶瓷', '苏绣', '宣纸', '景泰蓝', '竹编', '木雕', '剪纸', '紫砂壶'];
 
 const budgetOptions = [
-  { label: '1000元以下', value: '1000以下' },
-  { label: '1000-3000元', value: '1000-3000' },
-  { label: '3000-5000元', value: '3000-5000' },
-  { label: '5000-10000元', value: '5000-10000' },
-  { label: '10000元以上', value: '10000以上' }
+  { label: '1000元以下', value: '1000以下', range: '1000元以下' },
+  { label: '1000-3000元', value: '1000-3000', range: '1000-3000元' },
+  { label: '3000-5000元', value: '3000-5000', range: '3000-5000元' },
+  { label: '5000-10000元', value: '5000-10000', range: '5000-10000元' },
+  { label: '10000元以上', value: '10000以上', range: '10000元以上' }
 ];
 
 const statusMap: Record<string, { label: string; className: string }> = {
@@ -29,12 +30,19 @@ const CustomOrderPage: React.FC = () => {
   const [craftName, setCraftName] = useState('');
   const [description, setDescription] = useState('');
   const [budget, setBudget] = useState('');
+  const [budgetRange, setBudgetRange] = useState('');
   const [deadline, setDeadline] = useState('');
   const [contactName, setContactName] = useState('');
   const [contactPhone, setContactPhone] = useState('');
-  const [orders, setOrders] = useState<CustomOrder[]>(customOrderList);
   const [showSuccess, setShowSuccess] = useState(false);
   const [newOrderNo, setNewOrderNo] = useState('');
+
+  const orders = useCustomOrders();
+
+  const handleSelectBudget = (opt: { label: string; value: string; range: string }) => {
+    setBudget(opt.value);
+    setBudgetRange(opt.range);
+  };
 
   const handleSubmit = () => {
     if (!craftName) {
@@ -51,24 +59,24 @@ const CustomOrderPage: React.FC = () => {
     }
 
     const orderNo = 'DZ' + Date.now().toString().slice(-10);
-    const newOrder: CustomOrder = {
-      id: 'co' + Date.now(),
+    const budgetValue = budget ? Number(budget.replace(/[^0-9]/g, '').split('-')[1] || budget.replace(/[^0-9]/g, '')) : 0;
+
+    appStore.addCustomOrder({
       orderNo,
       craftName,
       description: description.trim(),
-      budget: budget ? Number(budget.replace(/[^0-9]/g, '').split('-')[1] || budget.replace(/[^0-9]/g, '')) : 0,
-      deadline: deadline || '待定',
-      status: 'pending',
-      createdAt: new Date().toISOString().split('T')[0]
-    };
+      budget: budgetValue,
+      budgetRange: budgetRange || '面议',
+      deadline: deadline || '待定'
+    });
 
-    setOrders([newOrder, ...orders]);
     setNewOrderNo(orderNo);
     setShowSuccess(true);
 
     setCraftName('');
     setDescription('');
     setBudget('');
+    setBudgetRange('');
     setDeadline('');
     setContactName('');
     setContactPhone('');
@@ -82,7 +90,7 @@ const CustomOrderPage: React.FC = () => {
   const handleViewOrder = (order: CustomOrder) => {
     Taro.showModal({
       title: `订单 ${order.orderNo}`,
-      content: `技艺：${order.craftName}\n需求：${order.description}\n预算：${order.budget}元\n截止：${order.deadline}\n状态：${statusMap[order.status]?.label || order.status}`,
+      content: `技艺：${order.craftName}\n需求：${order.description}\n预算：${order.budgetRange || order.budget + '元'}\n截止：${order.deadline}\n状态：${statusMap[order.status]?.label || order.status}`,
       showCancel: false
     });
   };
@@ -165,7 +173,7 @@ const CustomOrderPage: React.FC = () => {
                     <View
                       key={opt.value}
                       className={classNames(styles.tagItem, styles.tagSmall, budget === opt.value && styles.tagActive)}
-                      onClick={() => setBudget(opt.value)}
+                      onClick={() => handleSelectBudget(opt)}
                     >
                       <Text>{opt.label}</Text>
                     </View>
@@ -262,7 +270,7 @@ const CustomOrderPage: React.FC = () => {
                     <View className={styles.orderMeta}>
                       <View className={styles.metaItem}>
                         <Text className={styles.metaIcon}>💰</Text>
-                        <Text>预算 {order.budget || '面议'}元</Text>
+                        <Text>预算 {order.budgetRange || order.budget + '元'}</Text>
                       </View>
                       <View className={styles.metaItem}>
                         <Text className={styles.metaIcon}>⏰</Text>

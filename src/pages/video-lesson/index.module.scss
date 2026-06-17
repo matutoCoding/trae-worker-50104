@@ -269,3 +269,72 @@
     line-height: 1.8;
   }
 }
+
+.quickActions {
+  @include card-base;
+  margin: 0 $page-padding $spacing-md;
+  padding: $spacing-lg;
+  
+  .quickTitle {
+    font-size: $font-size-md;
+    font-weight: $font-weight-semibold;
+    color: $color-text-primary;
+    margin-bottom: $spacing-md;
+  }
+  
+  .quickActionGrid {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
+  }
+  
+  .quickActionCard {
+    display: flex;
+    align-items: center;
+    padding: $spacing-md;
+    background: $color-bg-section;
+    border-radius: $radius-lg;
+    transition: all $transition-base;
+    
+    &:active {
+      transform: scale(0.98);
+      background: rgba(184, 92, 56, 0.1);
+    }
+    
+    .quickActionIcon {
+      width: 80rpx;
+      height: 80rpx;
+      border-radius: 50%;
+      background: rgba(184, 92, 56, 0.1);
+      @include flex-center;
+      font-size: 36rpx;
+      margin-right: $spacing-md;
+      flex-shrink: 0;
+    }
+    
+    .quickActionText {
+      flex: 1;
+      min-width: 0;
+      
+      .quickActionTitle {
+        display: block;
+        font-size: $font-size-base;
+        font-weight: $font-weight-medium;
+        color: $color-text-primary;
+        margin-bottom: 4rpx;
+      }
+      
+      .quickActionDesc {
+        display: block;
+        font-size: $font-size-xs;
+        color: $color-text-tertiary;
+      }
+    }
+    
+    .quickActionArrow {
+      font-size: 40rpx;
+      color: $color-text-tertiary;
+      margin-left: $spacing-sm;
+    }
+  }
+}

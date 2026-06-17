@@ -4,6 +4,7 @@ import Taro from '@tarojs/taro';
 import styles from './index.module.scss';
 import classNames from 'classnames';
 import { craftList } from '@/data/crafts';
+import { appStore } from '@/store/appStore';
 
 const WorkUploadPage: React.FC = () => {
   const [images, setImages] = useState<string[]>([
@@ -50,8 +51,21 @@ const WorkUploadPage: React.FC = () => {
       return;
     }
 
-    console.log('[WorkUpload] 提交作品:', {
-      images, title, craftId: selectedCraftId, description, isForSale, price
+    const selectedCraft = craftList.find(c => c.id === selectedCraftId);
+
+    appStore.addWork({
+      title: title.trim(),
+      cover: images[0],
+      images,
+      authorId: 'me',
+      authorName: '非遗学员',
+      authorAvatar: 'https://picsum.photos/id/1005/100/100',
+      craftId: selectedCraftId,
+      craftName: selectedCraft?.name || '',
+      description: description.trim(),
+      price: isForSale ? Number(price) : undefined,
+      isForSale,
+      isMasterWork: false
     });
 
     setShowSuccess(true);

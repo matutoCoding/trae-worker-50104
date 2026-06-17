@@ -1,9 +1,11 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { View, Text, Image, ScrollView } from '@tarojs/components';
 import Taro, { useRouter } from '@tarojs/taro';
 import styles from './index.module.scss';
 import classNames from 'classnames';
 import { getCourseById, getLessonsByCourse } from '@/data/courses';
+import { appStore } from '@/store/appStore';
+import { useEnrolledCourses } from '@/hooks/useAppStore';
 import type { Course, Lesson } from '@/types';
 
 const VideoLessonPage: React.FC = () => {
@@ -11,10 +13,18 @@ const VideoLessonPage: React.FC = () => {
   const courseId = router.params.courseId || '1';
   const course: Course | undefined = useMemo(() => getCourseById(courseId), [courseId]);
   const lessons: Lesson[] = useMemo(() => getLessonsByCourse(courseId), [courseId]);
+  const { getEnrolledCourse } = useEnrolledCourses();
+  const enrolledCourse = getEnrolledCourse(courseId);
 
   const [currentLessonIndex, setCurrentLessonIndex] = useState(0);
   const [completedLessons, setCompletedLessons] = useState<string[]>([]);
   const [watchProgress, setWatchProgress] = useState(0);
+
+  useEffect(() => {
+    if (enrolledCourse) {
+      setCompletedLessons(enrolledCourse.completedLessons);
+    }
+  }, [enrolledCourse]);
 
   const currentLesson = lessons[currentLessonIndex];
   const completedCount = completedLessons.length;
@@ -44,6 +54,7 @@ const VideoLessonPage: React.FC = () => {
 
   const handleNextLesson = () => {
     if (!completedLessons.includes(currentLesson.id)) {
+      appStore.updateLessonProgress(courseId, currentLesson.id);
       setCompletedLessons([...completedLessons, currentLesson.id]);
     }
     if (currentLessonIndex < lessons.length - 1) {
@@ -57,7 +68,7 @@ const VideoLessonPage: React.FC = () => {
         confirmText: '去考核',
         success: (res) => {
           if (res.confirm) {
-            Taro.navigateTo({ url: '/pages/exam/index' });
+            Taro.navigateTo({ url: `/pages/exam/index?craftName=${encodeURIComponent(course?.craftName || '')}` });
           }
         }
       });
@@ -66,9 +77,22 @@ const VideoLessonPage: React.FC = () => {
 
   const handleMarkComplete = () => {
     if (!completedLessons.includes(currentLesson.id)) {
+      appStore.updateLessonProgress(courseId, currentLesson.id);
       setCompletedLessons([...completedLessons, currentLesson.id]);
       Taro.showToast({ title: '已标记完成', icon: 'success' });
     }
+  };
+
+  const handleGoPractice = () => {
+    Taro.navigateTo({
+      url: `/pages/practice/index?courseId=${courseId}&craftName=${encodeURIComponent(course?.craftName || '')}`
+    });
+  };
+
+  const handleGoExam = () => {
+    Taro.navigateTo({
+      url: `/pages/exam/index?craftName=${encodeURIComponent(course?.craftName || '')}&level=${encodeURIComponent(course?.level || '')}`
+    });
   };
 
   const getLessonStatus = (lessonId: string) => {
@@ -188,6 +212,30 @@ const VideoLessonPage: React.FC = () => {
           </Text>
         </View>
       )}
+
+      <View className={styles.quickActions}>
+        <View className={styles.quickTitle}>
+          <Text>🚀 学完本课时，继续下一步</Text>
+        </View>
+        <View className={styles.quickActionGrid}>
+          <View className={styles.quickActionCard} onClick={handleGoPractice}>
+            <View className={styles.quickActionIcon}>✍️</View>
+            <View className={styles.quickActionText}>
+              <Text className={styles.quickActionTitle}>去练习打卡</Text>
+              <Text className={styles.quickActionDesc}>记录练习心得，巩固所学</Text>
+            </View>
+            <Text className={styles.quickActionArrow}>›</Text>
+          </View>
+          <View className={styles.quickActionCard} onClick={handleGoExam}>
+            <View className={styles.quickActionIcon}>🏆</View>
+            <View className={styles.quickActionText}>
+              <Text className={styles.quickActionTitle}>参加等级考核</Text>
+              <Text className={styles.quickActionDesc}>检验学习成果，获取证书</Text>
+            </View>
+            <Text className={styles.quickActionArrow}>›</Text>
+          </View>
+        </View>
+      </View>
 
       <View style={{ height: 40 }} />
     </ScrollView>

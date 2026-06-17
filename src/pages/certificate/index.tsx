@@ -1,13 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { View, Text, Image, ScrollView } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import styles from './index.module.scss';
 import classNames from 'classnames';
-import { certificateList } from '@/data/user';
+import { useCertificates } from '@/hooks/useAppStore';
 
 const CertificatePage: React.FC = () => {
   const [selectedCert, setSelectedCert] = useState<number | null>(null);
   const [showDetail, setShowDetail] = useState(false);
+
+  const certificates = useCertificates();
+
+  const stats = useMemo(() => {
+    const primaryCount = certificates.filter(c => c.level === '初级').length;
+    const middleCount = certificates.filter(c => c.level === '中级').length;
+    const highCount = certificates.filter(c => c.level === '高级').length;
+    return { primaryCount, middleCount, highCount };
+  }, [certificates]);
 
   const handleViewDetail = (index: number) => {
     setSelectedCert(index);
@@ -37,22 +46,22 @@ const CertificatePage: React.FC = () => {
         <Text className={styles.headerDesc}>技艺传承的见证与荣誉</Text>
         <View className={styles.statsBar}>
           <View className={styles.statItem}>
-            <Text className={styles.statNum}>{certificateList.length}</Text>
+            <Text className={styles.statNum}>{certificates.length}</Text>
             <Text className={styles.statLabel}>已获得</Text>
           </View>
           <View className={styles.divider} />
           <View className={styles.statItem}>
-            <Text className={styles.statNum}>2</Text>
+            <Text className={styles.statNum}>{stats.primaryCount}</Text>
             <Text className={styles.statLabel}>初级</Text>
           </View>
           <View className={styles.divider} />
           <View className={styles.statItem}>
-            <Text className={styles.statNum}>0</Text>
+            <Text className={styles.statNum}>{stats.middleCount}</Text>
             <Text className={styles.statLabel}>中级</Text>
           </View>
           <View className={styles.divider} />
           <View className={styles.statItem}>
-            <Text className={styles.statNum}>0</Text>
+            <Text className={styles.statNum}>{stats.highCount}</Text>
             <Text className={styles.statLabel}>高级</Text>
           </View>
         </View>
@@ -60,7 +69,7 @@ const CertificatePage: React.FC = () => {
 
       <ScrollView scrollY style={{ height: 'calc(100vh - 360rpx)' }}>
         <View className={styles.certList}>
-          {certificateList.map((cert, index) => (
+          {certificates.map((cert, index) => (
             <View
               key={cert.id}
               className={styles.certCard}
@@ -135,7 +144,7 @@ const CertificatePage: React.FC = () => {
           ))}
         </View>
 
-        {certificateList.length === 0 && (
+        {certificates.length === 0 && (
           <View className={styles.emptyState}>
             <Text className={styles.emptyIcon}>📜</Text>
             <Text className={styles.emptyTitle}>暂无证书</Text>
@@ -167,7 +176,7 @@ const CertificatePage: React.FC = () => {
                   </View>
 
                   <View className={styles.detailCertTitle}>
-                    <Text className={styles.detailCertTitleText}>{certificateList[selectedCert].title}</Text>
+                    <Text className={styles.detailCertTitleText}>{certificates[selectedCert].title}</Text>
                   </View>
 
                   <View className={styles.detailCertDivider}>
@@ -180,7 +189,7 @@ const CertificatePage: React.FC = () => {
                     <Text className={styles.detailCertIntro}>兹证明</Text>
                     <Text className={styles.detailCertName}>非遗学员</Text>
                     <Text className={styles.detailCertDesc}>
-                      已完成{certificateList[selectedCert].craftName}技艺{certificateList[selectedCert].level}课程学习，
+                      已完成{certificates[selectedCert].craftName}技艺{certificates[selectedCert].level}课程学习，
                       并通过等级考核，特发此证。
                     </Text>
                   </View>
@@ -188,22 +197,22 @@ const CertificatePage: React.FC = () => {
                   <View className={styles.detailCertInfo}>
                     <View className={styles.infoCol}>
                       <Text className={styles.infoLabel}>技艺类别</Text>
-                      <Text className={styles.infoValue}>{certificateList[selectedCert].craftName}</Text>
+                      <Text className={styles.infoValue}>{certificates[selectedCert].craftName}</Text>
                     </View>
                     <View className={styles.infoCol}>
                       <Text className={styles.infoLabel}>等级</Text>
-                      <Text className={styles.infoValue}>{certificateList[selectedCert].level}</Text>
+                      <Text className={styles.infoValue}>{certificates[selectedCert].level}</Text>
                     </View>
                     <View className={styles.infoCol}>
                       <Text className={styles.infoLabel}>指导老师</Text>
-                      <Text className={styles.infoValue}>{certificateList[selectedCert].masterName}</Text>
+                      <Text className={styles.infoValue}>{certificates[selectedCert].masterName}</Text>
                     </View>
                   </View>
 
                   <View className={styles.detailCertFooter}>
                     <View className={styles.detailFooterLeft}>
                       <Text className={styles.detailDateLabel}>发证日期</Text>
-                      <Text className={styles.detailDate}>{certificateList[selectedCert].issueDate}</Text>
+                      <Text className={styles.detailDate}>{certificates[selectedCert].issueDate}</Text>
                     </View>
                     <View className={styles.detailCertStamp}>
                       <View className={styles.stampCircle}>
@@ -212,7 +221,7 @@ const CertificatePage: React.FC = () => {
                     </View>
                     <View className={styles.detailFooterRight}>
                       <Text className={styles.detailNoLabel}>证书编号</Text>
-                      <Text className={styles.detailNo}>{certificateList[selectedCert].certificateNo}</Text>
+                      <Text className={styles.detailNo}>{certificates[selectedCert].certificateNo}</Text>
                     </View>
                   </View>
                 </View>
