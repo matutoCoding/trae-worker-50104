@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Input, ScrollView } from '@tarojs/components';
+import { View, Text, Input, Image, ScrollView } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import styles from './index.module.scss';
 import classNames from 'classnames';

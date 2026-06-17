@@ -80,11 +80,19 @@ const CourseDetailPage: React.FC = () => {
   };
 
   const handleGoPractice = () => {
-    Taro.navigateTo({ url: `/pages/practice/index?courseId=${courseId}` });
+    Taro.navigateTo({
+      url: `/pages/practice/index?courseId=${courseId}&craftName=${encodeURIComponent(course?.craftName || '')}`
+    });
   };
 
   const handleGoExam = () => {
-    Taro.navigateTo({ url: `/pages/exam/index?courseId=${courseId}` });
+    Taro.navigateTo({
+      url: `/pages/exam/index?craftName=${encodeURIComponent(course?.craftName || '')}&level=${encodeURIComponent(course?.level || '')}`
+    });
+  };
+
+  const handleGoCertificate = () => {
+    Taro.navigateTo({ url: '/pages/certificate/index' });
   };
 
   const handleReserve = () => {
@@ -219,7 +227,7 @@ const CourseDetailPage: React.FC = () => {
               <Text className={styles.quickIcon}>📝</Text>
               <Text className={styles.quickText}>等级考核</Text>
             </View>
-            <View className={styles.quickActionItem} onClick={handleGoPractice}>
+            <View className={styles.quickActionItem} onClick={handleGoCertificate}>
               <Text className={styles.quickIcon}>📜</Text>
               <Text className={styles.quickText}>我的证书</Text>
             </View>
