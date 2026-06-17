@@ -43,10 +43,18 @@ const CoursePage: React.FC = () => {
   };
 
   const filteredCourses = courseList.filter(course => {
-    if (activeTab === 'all') return true;
-    if (activeTab === 'beginner') return course.level === '入门';
-    if (activeTab === 'intermediate') return course.level === '进阶';
-    if (activeTab === 'advanced') return course.level === '高级';
+    if (activeTab === 'beginner' && course.level !== '入门') return false;
+    if (activeTab === 'intermediate' && course.level !== '进阶') return false;
+    if (activeTab === 'advanced' && course.level !== '高级') return false;
+
+    if (searchText.trim()) {
+      const keyword = searchText.trim();
+      const matchTitle = course.title.includes(keyword);
+      const matchMaster = course.masterName.includes(keyword);
+      const matchCraft = course.craftName.includes(keyword);
+      if (!matchTitle && !matchMaster && !matchCraft) return false;
+    }
+
     return true;
   });
 

@@ -3,27 +3,283 @@
 .page {
   min-height: 100vh;
   background: $color-bg-page;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 0 $page-padding;
+  padding-bottom: 160rpx;
+}
+
+.headerCard {
+  background: $gradient-primary;
+  padding: $spacing-xxl $page-padding $spacing-xxl;
   
-  .icon {
-    font-size: 120rpx;
-    margin-bottom: $spacing-lg;
+  .headerRow {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: $spacing-xl;
+    
+    .statItem {
+      text-align: center;
+      
+      .num {
+        font-size: $font-size-xxl;
+        font-weight: $font-weight-bold;
+        color: #fff;
+      }
+      
+      .label {
+        font-size: $font-size-sm;
+        color: rgba(255, 255, 255, 0.8);
+        margin-top: 4rpx;
+      }
+    }
   }
   
-  .title {
-    font-size: $font-size-xl;
+  .todayCard {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: $radius-lg;
+    padding: $spacing-lg;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    
+    .todayInfo {
+      .label {
+        font-size: $font-size-sm;
+        color: rgba(255, 255, 255, 0.8);
+        margin-bottom: 8rpx;
+      }
+      
+      .date {
+        font-size: $font-size-lg;
+        font-weight: $font-weight-semibold;
+        color: #fff;
+      }
+    }
+    
+    .statusBadge {
+      padding: 10rpx 28rpx;
+      background: rgba(255, 255, 255, 0.95);
+      color: $color-primary;
+      font-size: $font-size-sm;
+      font-weight: $font-weight-semibold;
+      border-radius: $radius-button;
+    }
+  }
+}
+
+.formSection {
+  @include card-base;
+  margin: -40rpx $page-padding $spacing-md;
+  padding: $spacing-lg;
+  position: relative;
+  z-index: 10;
+  
+  .formTitle {
+    font-size: $font-size-lg;
     font-weight: $font-weight-semibold;
     color: $color-text-primary;
-    margin-bottom: $spacing-sm;
+    margin-bottom: $spacing-lg;
+    display: flex;
+    align-items: center;
+    gap: $spacing-xs;
   }
   
-  .desc {
+  .formGroup {
+    margin-bottom: $spacing-lg;
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+    
+    .label {
+      font-size: $font-size-sm;
+      color: $color-text-secondary;
+      margin-bottom: $spacing-sm;
+      display: block;
+    }
+    
+    .required {
+      color: $color-error;
+      margin-right: 4rpx;
+    }
+  }
+  
+  .inputWrap {
+    background: $color-bg-section;
+    border-radius: $radius-lg;
+    padding: 0 $spacing-md;
+    height: 88rpx;
+    display: flex;
+    align-items: center;
+    
+    .input {
+      flex: 1;
+      font-size: $font-size-base;
+      color: $color-text-primary;
+      background: transparent;
+      border: none;
+    }
+    
+    .unit {
+      font-size: $font-size-sm;
+      color: $color-text-tertiary;
+      margin-left: $spacing-sm;
+    }
+  }
+  
+  .textAreaWrap {
+    background: $color-bg-section;
+    border-radius: $radius-lg;
+    padding: $spacing-md;
+    min-height: 200rpx;
+    
+    .textArea {
+      width: 100%;
+      min-height: 160rpx;
+      font-size: $font-size-base;
+      color: $color-text-primary;
+      background: transparent;
+      border: none;
+    }
+  }
+  
+  .wordCount {
+    text-align: right;
+    font-size: $font-size-xs;
+    color: $color-text-tertiary;
+    margin-top: 8rpx;
+  }
+  
+  .quickTags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing-sm;
+    margin-top: $spacing-sm;
+    
+    .tag {
+      padding: 10rpx 24rpx;
+      background: $color-bg-section;
+      border-radius: $radius-button;
+      font-size: $font-size-sm;
+      color: $color-text-secondary;
+      
+      &.active {
+        background: $color-tag-bg;
+        color: $color-primary;
+      }
+    }
+  }
+  
+  .submitBtn {
+    width: 100%;
+    height: $button-height-lg;
+    border-radius: $radius-button;
+    background: $gradient-primary;
+    color: #fff;
+    font-size: $font-size-md;
+    font-weight: $font-weight-semibold;
+    @include flex-center;
+    margin-top: $spacing-xl;
+    
+    &:active {
+      opacity: 0.9;
+      transform: scale(0.98);
+    }
+  }
+}
+
+.recordsSection {
+  padding: 0 $page-padding;
+  margin-bottom: $spacing-md;
+  
+  .sectionHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: $spacing-md;
+    
+    .title {
+      font-size: $font-size-lg;
+      font-weight: $font-weight-semibold;
+      color: $color-text-primary;
+    }
+    
+    .count {
+      font-size: $font-size-sm;
+      color: $color-text-tertiary;
+    }
+  }
+}
+
+.recordList {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+}
+
+.recordCard {
+  @include card-base;
+  padding: $spacing-lg;
+  
+  .recordHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: $spacing-md;
+    
+    .date {
+      font-size: $font-size-base;
+      font-weight: $font-weight-semibold;
+      color: $color-text-primary;
+    }
+    
+    .badge {
+      padding: 6rpx 16rpx;
+      background: rgba(46, 125, 50, 0.1);
+      color: $color-secondary;
+      font-size: $font-size-xs;
+      border-radius: $radius-sm;
+      font-weight: $font-weight-medium;
+    }
+  }
+  
+  .recordContent {
+    font-size: $font-size-base;
+    color: $color-text-primary;
+    line-height: 1.6;
+    margin-bottom: $spacing-md;
+  }
+  
+  .recordMeta {
+    display: flex;
+    gap: $spacing-xl;
+    padding-top: $spacing-md;
+    border-top: 1rpx solid $color-border-light;
+    
+    .metaItem {
+      display: flex;
+      align-items: center;
+      gap: 8rpx;
+      font-size: $font-size-sm;
+      color: $color-text-tertiary;
+      
+      .icon {
+        font-size: $font-size-sm;
+      }
+    }
+  }
+}
+
+.emptyState {
+  @include card-base;
+  padding: $spacing-xxl * 2 $spacing-lg;
+  text-align: center;
+  
+  .icon {
+    font-size: 100rpx;
+    margin-bottom: $spacing-md;
+  }
+  
+  .text {
     font-size: $font-size-base;
     color: $color-text-tertiary;
-    text-align: center;
   }
 }

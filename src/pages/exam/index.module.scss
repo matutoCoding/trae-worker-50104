@@ -3,27 +3,415 @@
 .page {
   min-height: 100vh;
   background: $color-bg-page;
+  padding-bottom: 140rpx;
+}
+
+.examHeader {
+  background: linear-gradient(135deg, $color-primary 0%, #8B4513 100%);
+  padding: $spacing-lg $page-padding;
+  color: #fff;
+}
+
+.examInfo {
+  margin-bottom: $spacing-md;
+}
+
+.examTitle {
+  font-size: 40rpx;
+  font-weight: $font-weight-bold;
+  color: #fff;
+  margin-bottom: $spacing-sm;
+  display: block;
+}
+
+.examMeta {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: $spacing-sm;
+}
+
+.metaTag {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1rpx solid rgba(255, 255, 255, 0.3);
+  border-radius: $radius-sm;
+  padding: 4rpx 16rpx;
+  font-size: $font-size-sm;
+  color: #fff;
+}
+
+.metaText {
+  font-size: $font-size-sm;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.progressSection {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: $radius-md;
+  padding: $spacing-md;
+}
+
+.progressInfo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: $spacing-sm;
+}
+
+.progressLabel {
+  font-size: $font-size-sm;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.progressCount {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  color: #fff;
+}
+
+.progressBar {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 999rpx;
+  height: 12rpx;
+  overflow: hidden;
+}
+
+.progressFill {
+  background: #fff;
+  border-radius: 999rpx;
+  height: 100%;
+  transition: width 0.3s ease;
+}
+
+.questionList {
+  padding: $spacing-md $page-padding 0;
+}
+
+.questionCard {
+  background: #fff;
+  border-radius: $radius-md;
+  padding: $spacing-lg;
+  margin-bottom: $spacing-md;
+  box-shadow: $shadow-sm;
+}
+
+.questionHeader {
+  display: flex;
+  align-items: flex-start;
+  gap: $spacing-sm;
+  margin-bottom: $spacing-md;
+}
+
+.questionNum {
+  width: 48rpx;
+  height: 48rpx;
+  background: $color-primary;
+  color: #fff;
+  border-radius: $radius-sm;
+  display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 $page-padding;
-  
-  .icon {
-    font-size: 120rpx;
-    margin-bottom: $spacing-lg;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  flex-shrink: 0;
+}
+
+.questionTitle {
+  flex: 1;
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  line-height: 1.6;
+}
+
+.questionResult {
+  flex-shrink: 0;
+  font-size: $font-size-xs;
+  padding: 4rpx 12rpx;
+  border-radius: $radius-sm;
+  font-weight: $font-weight-semibold;
+
+  &.correct {
+    background: $color-success-bg;
+    color: $color-success;
   }
-  
-  .title {
-    font-size: $font-size-xl;
-    font-weight: $font-weight-semibold;
-    color: $color-text-primary;
-    margin-bottom: $spacing-sm;
+
+  &.wrong {
+    background: $color-error-bg;
+    color: $color-error;
   }
-  
-  .desc {
-    font-size: $font-size-base;
-    color: $color-text-tertiary;
-    text-align: center;
+}
+
+.optionsList {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+}
+
+.optionItem {
+  display: flex;
+  align-items: center;
+  padding: $spacing-md;
+  background: $color-bg-secondary;
+  border: 2rpx solid transparent;
+  border-radius: $radius-md;
+  transition: all 0.2s ease;
+  gap: $spacing-sm;
+
+  &:active {
+    background: #E8DFD5;
+  }
+
+  &.selected {
+    background: rgba(184, 92, 56, 0.1);
+    border-color: $color-primary;
+  }
+
+  &.correctOption {
+    background: $color-success-bg;
+    border-color: $color-success;
+  }
+
+  &.wrongOption {
+    background: $color-error-bg;
+    border-color: $color-error;
+  }
+}
+
+.optionLabel {
+  width: 44rpx;
+  height: 44rpx;
+  background: #fff;
+  border: 2rpx solid $color-border;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  color: $color-text-secondary;
+  flex-shrink: 0;
+
+  .selected & {
+    background: $color-primary;
+    border-color: $color-primary;
+    color: #fff;
+  }
+
+  .correctOption & {
+    background: $color-success;
+    border-color: $color-success;
+    color: #fff;
+  }
+
+  .wrongOption & {
+    background: $color-error;
+    border-color: $color-error;
+    color: #fff;
+  }
+}
+
+.optionText {
+  flex: 1;
+  font-size: $font-size-base;
+  color: $color-text-primary;
+  line-height: 1.5;
+}
+
+.optionIcon {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
+  flex-shrink: 0;
+
+  .correctOption & {
+    color: $color-success;
+  }
+
+  .wrongOption & {
+    color: $color-error;
+  }
+}
+
+.answerTip {
+  margin-top: $spacing-md;
+  padding: $spacing-sm $spacing-md;
+  background: rgba(76, 175, 80, 0.08);
+  border-radius: $radius-sm;
+  display: flex;
+  align-items: flex-start;
+  gap: $spacing-xs;
+}
+
+.tipLabel {
+  font-size: $font-size-sm;
+  color: $color-success;
+  font-weight: $font-weight-semibold;
+  flex-shrink: 0;
+}
+
+.tipText {
+  flex: 1;
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  line-height: 1.5;
+}
+
+.submitBar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: $spacing-md $page-padding;
+  padding-bottom: calc(#{$spacing-md} + env(safe-area-inset-bottom));
+  background: #fff;
+  box-shadow: 0 -4rpx 20rpx rgba(0, 0, 0, 0.06);
+}
+
+.submitBtn {
+  background: linear-gradient(135deg, $color-primary 0%, #8B4513 100%);
+  color: #fff;
+  text-align: center;
+  padding: $spacing-md 0;
+  border-radius: $radius-md;
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  box-shadow: $shadow-md;
+
+  &:active {
+    opacity: 0.9;
+  }
+}
+
+.modalMask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  padding: $page-padding;
+}
+
+.resultModal {
+  background: #fff;
+  border-radius: $radius-lg;
+  padding: $spacing-xl;
+  width: 100%;
+  max-width: 600rpx;
+  box-shadow: $shadow-lg;
+}
+
+.resultIcon {
+  font-size: 120rpx;
+  text-align: center;
+  margin-bottom: $spacing-md;
+}
+
+.resultTitle {
+  font-size: 40rpx;
+  font-weight: $font-weight-bold;
+  color: $color-text-primary;
+  text-align: center;
+  margin-bottom: $spacing-lg;
+  display: block;
+}
+
+.scoreCard {
+  background: linear-gradient(135deg, rgba(184, 92, 56, 0.1) 0%, rgba(184, 92, 56, 0.05) 100%);
+  border-radius: $radius-md;
+  padding: $spacing-lg;
+  text-align: center;
+  margin-bottom: $spacing-lg;
+}
+
+.scoreMain {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 8rpx;
+  margin-bottom: $spacing-xs;
+}
+
+.scoreNum {
+  font-size: 96rpx;
+  font-weight: $font-weight-bold;
+  color: $color-primary;
+  line-height: 1;
+}
+
+.scoreUnit {
+  font-size: $font-size-lg;
+  color: $color-primary;
+  font-weight: $font-weight-semibold;
+}
+
+.scorePass {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+}
+
+.resultStats {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: $spacing-xl;
+  padding: $spacing-md 0;
+  border-top: 1rpx solid $color-border;
+  border-bottom: 1rpx solid $color-border;
+}
+
+.statItem {
+  text-align: center;
+}
+
+.statNum {
+  font-size: 44rpx;
+  font-weight: $font-weight-bold;
+  color: $color-text-primary;
+  display: block;
+  margin-bottom: 4rpx;
+}
+
+.statLabel {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+}
+
+.resultActions {
+  display: flex;
+  gap: $spacing-md;
+}
+
+.secondaryBtn {
+  flex: 1;
+  background: $color-bg-secondary;
+  color: $color-text-primary;
+  text-align: center;
+  padding: $spacing-md 0;
+  border-radius: $radius-md;
+  font-size: $font-size-base;
+  font-weight: $font-weight-semibold;
+
+  &:active {
+    background: #E8DFD5;
+  }
+}
+
+.primaryBtn {
+  flex: 1;
+  background: linear-gradient(135deg, $color-primary 0%, #8B4513 100%);
+  color: #fff;
+  text-align: center;
+  padding: $spacing-md 0;
+  border-radius: $radius-md;
+  font-size: $font-size-base;
+  font-weight: $font-weight-semibold;
+  box-shadow: $shadow-sm;
+
+  &:active {
+    opacity: 0.9;
   }
 }

@@ -17,6 +17,17 @@ const categories = [
   '全部', '陶瓷', '苏绣', '宣纸', '景泰蓝', '竹编', '木雕', '剪纸', '紫砂'
 ];
 
+const categoryToCraftMap: Record<string, string> = {
+  '陶瓷': '景德镇陶瓷',
+  '苏绣': '苏绣',
+  '宣纸': '宣纸',
+  '景泰蓝': '景泰蓝',
+  '竹编': '竹编',
+  '木雕': '木雕',
+  '剪纸': '剪纸',
+  '紫砂': '紫砂壶'
+};
+
 const WorksPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState('all');
   const [activeCategory, setActiveCategory] = useState('全部');
@@ -45,6 +56,12 @@ const WorksPage: React.FC = () => {
     if (activeTab === 'master' && !work.isMasterWork) return false;
     if (activeTab === 'student' && work.isMasterWork) return false;
     if (activeTab === 'sale' && !work.isForSale) return false;
+
+    if (activeCategory !== '全部') {
+      const targetCraft = categoryToCraftMap[activeCategory];
+      if (!work.craftName.includes(targetCraft)) return false;
+    }
+
     return true;
   });
 

@@ -4,9 +4,15 @@ import Taro from '@tarojs/taro';
 import styles from './index.module.scss';
 import { userProfile, practiceRecords } from '@/data/user';
 
+const tabBarPages = ['/pages/home/index', '/pages/course/index', '/pages/works/index', '/pages/mine/index'];
+
 const MinePage: React.FC = () => {
   const handleNavigate = (url: string) => {
-    Taro.navigateTo({ url });
+    if (tabBarPages.includes(url)) {
+      Taro.switchTab({ url });
+    } else {
+      Taro.navigateTo({ url });
+    }
   };
 
   const handleSettings = () => {

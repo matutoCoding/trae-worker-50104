@@ -3,27 +3,311 @@
 .page {
   min-height: 100vh;
   background: $color-bg-page;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  padding: $spacing-md $page-padding $spacing-xxl;
+}
+
+.formCard {
+  @include card-base;
+  padding: $spacing-lg;
+  
+  .formGroup {
+    margin-bottom: $spacing-xl;
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+    
+    .label {
+      font-size: $font-size-sm;
+      color: $color-text-secondary;
+      margin-bottom: $spacing-sm;
+      display: block;
+    }
+    
+    .required {
+      color: $color-error;
+      margin-right: 4rpx;
+    }
+  }
+  
+  .uploadArea {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing-md;
+    
+    .uploadItem {
+      width: 200rpx;
+      height: 200rpx;
+      border-radius: $radius-lg;
+      background: $color-bg-section;
+      @include flex-center;
+      flex-direction: column;
+      gap: 8rpx;
+      border: 2rpx dashed $color-border;
+      
+      .icon {
+        font-size: 48rpx;
+        color: $color-text-disabled;
+      }
+      
+      .text {
+        font-size: $font-size-xs;
+        color: $color-text-tertiary;
+      }
+    }
+    
+    .imageItem {
+      width: 200rpx;
+      height: 200rpx;
+      border-radius: $radius-lg;
+      position: relative;
+      overflow: hidden;
+      
+      .image {
+        width: 100%;
+        height: 100%;
+      }
+      
+      .removeBtn {
+        position: absolute;
+        top: 8rpx;
+        right: 8rpx;
+        width: 40rpx;
+        height: 40rpx;
+        background: rgba(0, 0, 0, 0.6);
+        border-radius: 50%;
+        @include flex-center;
+        color: #fff;
+        font-size: 24rpx;
+      }
+    }
+  }
+  
+  .inputWrap {
+    background: $color-bg-section;
+    border-radius: $radius-lg;
+    padding: 0 $spacing-md;
+    height: 88rpx;
+    display: flex;
+    align-items: center;
+    
+    .input {
+      flex: 1;
+      font-size: $font-size-base;
+      color: $color-text-primary;
+      background: transparent;
+      border: none;
+    }
+  }
+  
+  .selectWrap {
+    background: $color-bg-section;
+    border-radius: $radius-lg;
+    padding: $spacing-md;
+    
+    .selectOptions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: $spacing-sm;
+    }
+    
+    .optionItem {
+      padding: 12rpx 28rpx;
+      border-radius: $radius-button;
+      background: $color-bg-card;
+      border: 2rpx solid transparent;
+      font-size: $font-size-sm;
+      color: $color-text-secondary;
+      
+      &.active {
+        background: $color-tag-bg;
+        border-color: $color-primary;
+        color: $color-primary;
+        font-weight: $font-weight-medium;
+      }
+    }
+  }
+  
+  .textAreaWrap {
+    background: $color-bg-section;
+    border-radius: $radius-lg;
+    padding: $spacing-md;
+    min-height: 200rpx;
+    
+    .textArea {
+      width: 100%;
+      min-height: 160rpx;
+      font-size: $font-size-base;
+      color: $color-text-primary;
+      background: transparent;
+      border: none;
+    }
+  }
+  
+  .wordCount {
+    text-align: right;
+    font-size: $font-size-xs;
+    color: $color-text-tertiary;
+    margin-top: 8rpx;
+  }
+  
+  .switchRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: $spacing-md;
+    background: $color-bg-section;
+    border-radius: $radius-lg;
+    
+    .label {
+      font-size: $font-size-base;
+      color: $color-text-primary;
+      margin: 0;
+    }
+    
+    .desc {
+      font-size: $font-size-xs;
+      color: $color-text-tertiary;
+      margin-top: 4rpx;
+    }
+    
+    .switchWrap {
+      width: 80rpx;
+      height: 48rpx;
+      border-radius: 24rpx;
+      background: $color-text-disabled;
+      position: relative;
+      transition: all $transition-base;
+      
+      &.active {
+        background: $color-primary;
+      }
+      
+      &::after {
+        content: '';
+        position: absolute;
+        top: 4rpx;
+        left: 4rpx;
+        width: 40rpx;
+        height: 40rpx;
+        background: #fff;
+        border-radius: 50%;
+        transition: all $transition-base;
+      }
+      
+      &.active::after {
+        left: 36rpx;
+      }
+    }
+  }
+  
+  .priceRow {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+    padding: $spacing-md;
+    background: $color-bg-section;
+    border-radius: $radius-lg;
+    
+    .symbol {
+      font-size: $font-size-md;
+      color: $color-primary;
+      font-weight: $font-weight-semibold;
+    }
+    
+    .priceInput {
+      flex: 1;
+      font-size: $font-size-lg;
+      color: $color-primary;
+      font-weight: $font-weight-semibold;
+      background: transparent;
+      border: none;
+    }
+  }
+  
+  .submitBtn {
+    width: 100%;
+    height: $button-height-lg;
+    border-radius: $radius-button;
+    background: $gradient-primary;
+    color: #fff;
+    font-size: $font-size-md;
+    font-weight: $font-weight-semibold;
+    @include flex-center;
+    margin-top: $spacing-xxl;
+    
+    &:active {
+      opacity: 0.9;
+      transform: scale(0.98);
+    }
+  }
+}
+
+.successModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  @include flex-center;
   padding: 0 $page-padding;
   
-  .icon {
-    font-size: 120rpx;
-    margin-bottom: $spacing-lg;
-  }
-  
-  .title {
-    font-size: $font-size-xl;
-    font-weight: $font-weight-semibold;
-    color: $color-text-primary;
-    margin-bottom: $spacing-sm;
-  }
-  
-  .desc {
-    font-size: $font-size-base;
-    color: $color-text-tertiary;
+  .modalContent {
+    width: 100%;
+    background: $color-bg-card;
+    border-radius: $radius-xl;
+    padding: $spacing-xxl $spacing-lg;
     text-align: center;
+    
+    .icon {
+      width: 120rpx;
+      height: 120rpx;
+      margin: 0 auto $spacing-lg;
+      background: rgba(46, 125, 50, 0.1);
+      border-radius: 50%;
+      @include flex-center;
+      font-size: 64rpx;
+      color: $color-success;
+    }
+    
+    .title {
+      font-size: $font-size-xl;
+      font-weight: $font-weight-bold;
+      color: $color-text-primary;
+      margin-bottom: $spacing-sm;
+    }
+    
+    .desc {
+      font-size: $font-size-base;
+      color: $color-text-secondary;
+      margin-bottom: $spacing-xl;
+      line-height: 1.6;
+    }
+    
+    .actions {
+      display: flex;
+      gap: $spacing-md;
+      
+      .btn {
+        flex: 1;
+        height: $button-height-lg;
+        border-radius: $radius-button;
+        font-size: $font-size-base;
+        font-weight: $font-weight-medium;
+        @include flex-center;
+        
+        &.secondary {
+          background: $color-bg-section;
+          color: $color-text-secondary;
+        }
+        
+        &.primary {
+          background: $gradient-primary;
+          color: #fff;
+        }
+      }
+    }
   }
 }

@@ -3,27 +3,450 @@
 .page {
   min-height: 100vh;
   background: $color-bg-page;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 0 $page-padding;
+  padding-bottom: 160rpx;
+}
+
+.cover {
+  position: relative;
+  width: 100%;
+  height: 420rpx;
   
-  .icon {
-    font-size: 120rpx;
-    margin-bottom: $spacing-lg;
+  .coverImage {
+    width: 100%;
+    height: 100%;
   }
+  
+  .levelTag {
+    position: absolute;
+    top: $spacing-lg;
+    left: $spacing-lg;
+    padding: 8rpx 20rpx;
+    background: rgba(184, 92, 56, 0.95);
+    color: #fff;
+    font-size: $font-size-sm;
+    border-radius: $radius-sm;
+    font-weight: $font-weight-medium;
+  }
+}
+
+.courseInfo {
+  @include card-base;
+  margin: -40rpx $page-padding $spacing-md;
+  padding: $spacing-lg;
+  position: relative;
+  z-index: 10;
   
   .title {
     font-size: $font-size-xl;
+    font-weight: $font-weight-bold;
+    color: $color-text-primary;
+    line-height: 1.4;
+    margin-bottom: $spacing-md;
+  }
+  
+  .metaRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: $spacing-md;
+    
+    .masterInfo {
+      display: flex;
+      align-items: center;
+      gap: $spacing-sm;
+      
+      .avatar {
+        width: 64rpx;
+        height: 64rpx;
+        border-radius: 50%;
+      }
+      
+      .name {
+        font-size: $font-size-base;
+        color: $color-text-primary;
+        font-weight: $font-weight-medium;
+      }
+      
+      .title {
+        font-size: $font-size-xs;
+        color: $color-text-tertiary;
+        margin: 0;
+      }
+    }
+    
+    .rating {
+      display: flex;
+      align-items: center;
+      gap: 4rpx;
+      
+      .star {
+        color: $color-accent;
+        font-size: $font-size-base;
+      }
+      
+      .num {
+        font-size: $font-size-base;
+        font-weight: $font-weight-semibold;
+        color: $color-text-primary;
+      }
+    }
+  }
+  
+  .stats {
+    display: flex;
+    gap: $spacing-xl;
+    padding-top: $spacing-md;
+    border-top: 1rpx solid $color-border-light;
+    
+    .stat {
+      display: flex;
+      flex-direction: column;
+      gap: 4rpx;
+      
+      .num {
+        font-size: $font-size-lg;
+        font-weight: $font-weight-bold;
+        color: $color-primary;
+      }
+      
+      .label {
+        font-size: $font-size-xs;
+        color: $color-text-tertiary;
+      }
+    }
+  }
+}
+
+.priceSection {
+  @include card-base;
+  margin: 0 $page-padding $spacing-md;
+  padding: $spacing-lg;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  
+  .priceInfo {
+    .price {
+      display: flex;
+      align-items: baseline;
+      gap: 4rpx;
+      
+      .symbol {
+        font-size: $font-size-md;
+        color: $color-primary;
+        font-weight: $font-weight-medium;
+      }
+      
+      .num {
+        font-size: $font-size-xxl;
+        font-weight: $font-weight-bold;
+        color: $color-primary;
+      }
+      
+      .original {
+        font-size: $font-size-sm;
+        color: $color-text-disabled;
+        text-decoration: line-through;
+        margin-left: $spacing-sm;
+      }
+    }
+    
+    .discount {
+      margin-top: 4rpx;
+      font-size: $font-size-xs;
+      color: $color-secondary;
+    }
+  }
+  
+  .students {
+    font-size: $font-size-sm;
+    color: $color-text-secondary;
+  }
+}
+
+.sectionCard {
+  @include card-base;
+  margin: 0 $page-padding $spacing-md;
+  padding: $spacing-lg;
+  
+  .sectionTitle {
+    font-size: $font-size-lg;
     font-weight: $font-weight-semibold;
     color: $color-text-primary;
-    margin-bottom: $spacing-sm;
+    margin-bottom: $spacing-md;
+    padding-left: $spacing-sm;
+    border-left: 6rpx solid $color-primary;
   }
   
   .desc {
     font-size: $font-size-base;
-    color: $color-text-tertiary;
-    text-align: center;
+    color: $color-text-secondary;
+    line-height: 1.8;
+  }
+  
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing-sm;
+    margin-top: $spacing-md;
+    
+    .tag {
+      padding: 8rpx 20rpx;
+      background: $color-tag-bg;
+      color: $color-tag-text;
+      font-size: $font-size-sm;
+      border-radius: $radius-button;
+    }
+  }
+}
+
+.scheduleList {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+}
+
+.scheduleItem {
+  border: 2rpx solid $color-border;
+  border-radius: $radius-lg;
+  padding: $spacing-md;
+  transition: all $transition-base;
+  
+  &.active {
+    border-color: $color-primary;
+    background: rgba(184, 92, 56, 0.05);
+  }
+  
+  .scheduleHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: $spacing-sm;
+    
+    .className {
+      font-size: $font-size-md;
+      font-weight: $font-weight-semibold;
+      color: $color-text-primary;
+    }
+    
+    .price {
+      font-size: $font-size-lg;
+      font-weight: $font-weight-bold;
+      color: $color-primary;
+    }
+  }
+  
+  .scheduleInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 8rpx;
+    
+    .infoRow {
+      display: flex;
+      align-items: center;
+      gap: $spacing-sm;
+      font-size: $font-size-sm;
+      color: $color-text-secondary;
+      
+      .icon {
+        font-size: $font-size-sm;
+      }
+    }
+  }
+  
+  .scheduleFooter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: $spacing-md;
+    padding-top: $spacing-md;
+    border-top: 1rpx solid $color-border-light;
+    
+    .slots {
+      font-size: $font-size-sm;
+      
+      .num {
+        color: $color-error;
+        font-weight: $font-weight-medium;
+      }
+    }
+    
+    .selectBtn {
+      padding: 10rpx 32rpx;
+      border-radius: $radius-button;
+      font-size: $font-size-sm;
+      font-weight: $font-weight-medium;
+      border: 2rpx solid $color-primary;
+      color: $color-primary;
+      background: transparent;
+      
+      &.selected {
+        background: $gradient-primary;
+        color: #fff;
+      }
+    }
+  }
+}
+
+.bottomBar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: $color-bg-card;
+  padding: $spacing-md $page-padding;
+  @include safe-area-bottom;
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+  box-shadow: 0 -4rpx 16rpx rgba(139, 69, 19, 0.08);
+  
+  .consultBtn {
+    width: 120rpx;
+    height: $button-height-lg;
+    border-radius: $radius-button;
+    background: $color-bg-section;
+    @include flex-center;
+    gap: 4rpx;
+    
+    .icon {
+      font-size: $font-size-lg;
+    }
+    
+    .text {
+      font-size: $font-size-xs;
+      color: $color-text-secondary;
+    }
+  }
+  
+  .favoriteBtn {
+    width: 120rpx;
+    height: $button-height-lg;
+    border-radius: $radius-button;
+    background: $color-bg-section;
+    @include flex-center;
+    gap: 4rpx;
+    
+    .icon {
+      font-size: $font-size-lg;
+    }
+    
+    .text {
+      font-size: $font-size-xs;
+      color: $color-text-secondary;
+    }
+  }
+  
+  .enrollBtn {
+    flex: 1;
+    height: $button-height-lg;
+    border-radius: $radius-button;
+    background: $gradient-primary;
+    color: #fff;
+    font-size: $font-size-md;
+    font-weight: $font-weight-semibold;
+    @include flex-center;
+    
+    &:active {
+      opacity: 0.9;
+      transform: scale(0.98);
+    }
+    
+    &.disabled {
+      background: $color-text-disabled;
+    }
+  }
+}
+
+.modalMask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  @include flex-center;
+  padding: 0 $page-padding;
+}
+
+.modalContent {
+  width: 100%;
+  background: $color-bg-card;
+  border-radius: $radius-xl;
+  padding: $spacing-xxl $spacing-lg;
+  text-align: center;
+  
+  .successIcon {
+    width: 120rpx;
+    height: 120rpx;
+    margin: 0 auto $spacing-lg;
+    background: rgba(46, 125, 50, 0.1);
+    border-radius: 50%;
+    @include flex-center;
+    font-size: 64rpx;
+    color: $color-success;
+  }
+  
+  .modalTitle {
+    font-size: $font-size-xl;
+    font-weight: $font-weight-bold;
+    color: $color-text-primary;
+    margin-bottom: $spacing-sm;
+  }
+  
+  .modalDesc {
+    font-size: $font-size-base;
+    color: $color-text-secondary;
+    margin-bottom: $spacing-lg;
+    line-height: 1.6;
+  }
+  
+  .orderInfo {
+    background: $color-bg-section;
+    border-radius: $radius-lg;
+    padding: $spacing-lg;
+    margin-bottom: $spacing-xl;
+    text-align: left;
+    
+    .infoRow {
+      display: flex;
+      justify-content: space-between;
+      padding: 8rpx 0;
+      font-size: $font-size-sm;
+      
+      .label {
+        color: $color-text-tertiary;
+      }
+      
+      .value {
+        color: $color-text-primary;
+        font-weight: $font-weight-medium;
+      }
+    }
+  }
+  
+  .modalActions {
+    display: flex;
+    gap: $spacing-md;
+    
+    .actionBtn {
+      flex: 1;
+      height: $button-height-lg;
+      border-radius: $radius-button;
+      font-size: $font-size-base;
+      font-weight: $font-weight-medium;
+      @include flex-center;
+      
+      &.secondary {
+        background: $color-bg-section;
+        color: $color-text-secondary;
+      }
+      
+      &.primary {
+        background: $gradient-primary;
+        color: #fff;
+      }
+    }
   }
 }
